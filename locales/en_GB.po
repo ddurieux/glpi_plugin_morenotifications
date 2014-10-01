@@ -1,0 +1,142 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Project - plugin morenotifications\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-10-01 21:07+0200\n"
+"PO-Revision-Date: 2014-10-01 19:11+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/glpi_morenotifications/language/en_GB/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_GB\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: inc/entity.class.php:76 inc/general.class.php:56
+msgid "More notifications"
+msgstr ""
+
+#: inc/entity.class.php:122
+msgid "Next day + every day"
+msgstr ""
+
+#: inc/entity.class.php:123
+msgid "Next day + every 2 days"
+msgstr ""
+
+#: inc/entity.class.php:124
+msgid "Next day + every 3 days"
+msgstr ""
+
+#: inc/entity.class.php:125
+msgid "Next day + every 4 days"
+msgstr ""
+
+#: inc/entity.class.php:126
+msgid "Next day + every 5 days"
+msgstr ""
+
+#: inc/entity.class.php:127
+msgid "Next day + every 6 days"
+msgstr ""
+
+#: inc/entity.class.php:128
+msgid "Next day + every 7 days"
+msgstr ""
+
+#: inc/entity.class.php:129
+msgid "Next day + every 8 days"
+msgstr ""
+
+#: inc/entity.class.php:130
+msgid "Next day + every 9 days"
+msgstr ""
+
+#: inc/entity.class.php:131
+msgid "Next day + every 10 days"
+msgstr ""
+
+#: inc/entity.class.php:132
+msgid "Next day + every 11 days"
+msgstr ""
+
+#: inc/entity.class.php:133
+msgid "Next day + every 12 days"
+msgstr ""
+
+#: inc/entity.class.php:134
+msgid "Next day + every 13 days"
+msgstr ""
+
+#: inc/entity.class.php:135
+msgid "Next day + every 14 days"
+msgstr ""
+
+#: inc/entity.class.php:136
+msgid "Next day + every 15 days"
+msgstr ""
+
+#: inc/entity.class.php:137
+msgid "Next day + every 16 days"
+msgstr ""
+
+#: inc/entity.class.php:138
+msgid "Next day + every 17 days"
+msgstr ""
+
+#: inc/entity.class.php:139
+msgid "Next day + every 18 days"
+msgstr ""
+
+#: inc/entity.class.php:140
+msgid "Next day + every 19 days"
+msgstr ""
+
+#: inc/entity.class.php:141
+msgid "Next day + every 20 days"
+msgstr ""
+
+#: inc/entity.class.php:142
+msgid "Next day + every 21 days"
+msgstr ""
+
+#: inc/entity.class.php:143
+msgid "Next day + every 22 days"
+msgstr ""
+
+#: inc/entity.class.php:144
+msgid "Next day + every 23 days"
+msgstr ""
+
+#: inc/entity.class.php:145
+msgid "Next day + every 24 days"
+msgstr ""
+
+#: inc/entity.class.php:146
+msgid "Next day + every 25 days"
+msgstr ""
+
+#: inc/entity.class.php:152
+msgid "Tickets not solved / not closed (with due date)"
+msgstr ""
+
+#: inc/entity.class.php:162
+msgid "Tickets waiting"
+msgstr ""
+
+#: inc/notificationtargetgeneral.class.php:70
+msgid "Ticket not solved (use due date)"
+msgstr ""
+
+#: inc/notificationtargetgeneral.class.php:71
+msgid "Ticket waiting"
+msgstr ""
+
+#: inc/ticketnotsolved.class.php:56
+msgid "Tickets not solved"
+msgstr ""
