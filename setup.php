@@ -57,6 +57,8 @@ function plugin_init_morenotifications() {
          Plugin::registerClass('PluginMorenotificationsEntity',
          		array('addtabon' => 'Entity'));
 
+         $PLUGIN_HOOKS['item_get_datas']['morenotifications'] =
+                 array('NotificationTargetTicket' => 'plugin_morenotifications_notiftag');
    }
    return $PLUGIN_HOOKS;
 }

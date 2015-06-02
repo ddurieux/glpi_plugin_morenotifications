@@ -57,7 +57,7 @@ function plugin_morenotifications_install() {
               . " (`entities_id`) VALUES ('0')";
       $DB->query($query);
    }
-   
+
    CronTask::Register('PluginMorenotificationsGeneral',
                       'morenotifications',
                       '86400',
@@ -83,5 +83,40 @@ function plugin_morenotifications_uninstall() {
    return true;
 }
 
+
+function plugin_morenotifications_notiftag(NotificationTarget $item) {
+
+   $entity = new Entity();
+   $entity->getFromDB($item->entity);
+
+   $item->datas['##entity.phonenumber##'] = $entity->fields['phonenumber'];
+   $item->datas['##entity.address##']     = $entity->fields['address'];
+   $item->datas['##entity.fax##']         = $entity->fields['fax'];
+   $item->datas['##entity.website##']     = $entity->fields['website'];
+   $item->datas['##entity.email##']       = $entity->fields['email'];
+   $item->datas['##entity.postcode##']    = $entity->fields['postcode'];
+   $item->datas['##entity.town##']        = $entity->fields['town'];
+   $item->datas['##entity.state##']       = $entity->fields['state'];
+   $item->datas['##entity.country##']     = $entity->fields['country'];
+   $item->datas['##entity.notepad##']     = $entity->fields['notepad'];
+
+
+   if (isset($item->obj->fields['itemtype'])) {
+      $user = new User();
+      $i = new $item->obj->fields['itemtype'];
+      $i->getFromDB($item->obj->fields['items_id']);
+      if ($i->fields['users_id_tech'] > 0) {
+         if ($user->getFromDB($i->fields['users_id_tech'])) {
+
+            $item->datas['##ticket.item.tech.name##']   = $user->fields['name'];
+            $item->datas['##ticket.item.tech.phone##']  = $user->fields['phone'];
+            $item->datas['##ticket.item.tech.mobile##'] = $user->fields['mobile'];
+            $item->datas['##ticket.item.tech.email##']  = implode(' ,', UserEmail::getAllForUser($i->fields['users_id_tech']));
+         }
+      }
+
+
+   }
+}
 
 ?>
