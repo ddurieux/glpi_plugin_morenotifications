@@ -101,14 +101,15 @@ function plugin_morenotifications_notiftag(NotificationTarget $item) {
    $item->datas['##entity.notepad##']     = $entity->fields['notepad'];
 
 
-   if (isset($item->obj->fields['itemtype'])) {
+   if (isset($item->obj->fields['itemtype'])
+           && $item->obj->fields['itemtype'] != '') {
       $user = new User();
       $i = new $item->obj->fields['itemtype'];
       $i->getFromDB($item->obj->fields['items_id']);
       if ($i->fields['users_id_tech'] > 0) {
          if ($user->getFromDB($i->fields['users_id_tech'])) {
 
-            $item->datas['##ticket.item.tech.name##']   = $user->fields['name'];
+            $item->datas['##ticket.item.tech.name##']   = $user->getName();
             $item->datas['##ticket.item.tech.phone##']  = $user->fields['phone'];
             $item->datas['##ticket.item.tech.mobile##'] = $user->fields['mobile'];
             $item->datas['##ticket.item.tech.email##']  = implode(' ,', UserEmail::getAllForUser($i->fields['users_id_tech']));
