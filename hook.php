@@ -115,8 +115,12 @@ function plugin_morenotifications_notiftag(NotificationTarget $item) {
             $item->datas['##ticket.item.tech.email##']  = implode(' ,', UserEmail::getAllForUser($i->fields['users_id_tech']));
          }
       }
-
-
+   }
+   if (!isset($item->datas['##ticket.item.tech.name##'])) {
+      $item->datas['##ticket.item.tech.name##']   = "";
+      $item->datas['##ticket.item.tech.phone##']  = "";
+      $item->datas['##ticket.item.tech.mobile##'] = "";
+      $item->datas['##ticket.item.tech.email##']  = "";
    }
 }
 
