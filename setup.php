@@ -40,7 +40,7 @@
    ------------------------------------------------------------------------
  */
 
-define ("PLUGIN_MORENOTIFICATIONS_VERSION","0.84+1.0");
+define ("PLUGIN_MORENOTIFICATIONS_VERSION","0.85+1.0");
 
 // Init the hooks of morenotifications
 function plugin_init_morenotifications() {
@@ -71,7 +71,7 @@ function plugin_version_morenotifications() {
                 'license'        => 'AGPLv3+',
                 'author'         =>'<a href="mailto:d.durieux@siprossii.com">David DURIEUX</a>',
                 'homepage'       =>'https://github.com/ddurieux/glpi_plugin_morenotifications',
-                'minGlpiVersion' => '0.84'
+                'minGlpiVersion' => '0.85'
    );
 }
 
@@ -79,8 +79,8 @@ function plugin_version_morenotifications() {
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_morenotifications_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'0.84','lt') || version_compare(GLPI_VERSION,'0.85','ge')) {
-      echo "error, require GLPI 0.84.x";
+   if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'0.91','ge')) {
+      echo "error, require GLPI 0.85.x or 0.90.x";
    } else {
       return true;
    }
@@ -89,6 +89,5 @@ function plugin_morenotifications_check_prerequisites() {
 function plugin_morenotifications_check_config() {
    return true;
 }
-
 
 ?>
