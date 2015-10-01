@@ -3,9 +3,9 @@
 /*
    ------------------------------------------------------------------------
    Plugin Morenotifications for GLPI
-   Copyright (C) 2014-2014 by the Plugin Morenotifications for David Durieux.
+   Copyright (C) 2014-2015 by the Plugin Morenotifications for David Durieux.
 
-   https://
+   https://github.com/ddurieux/glpi_plugin_morenotifications
    ------------------------------------------------------------------------
 
    LICENSE
@@ -31,10 +31,10 @@
    @author    David Durieux
    @co-author
    @comment
-   @copyright Copyright (c) 2011-2014 Plugin Morenotifications for David Durieux
+   @copyright Copyright (c) 2011-2015 Plugin Morenotifications for David Durieux
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
-   @link      https://
+   @link      https://github.com/ddurieux/glpi_plugin_morenotifications
    @since     2014
 
    ------------------------------------------------------------------------
@@ -70,7 +70,7 @@ function plugin_version_morenotifications() {
                 'version'        => PLUGIN_MORENOTIFICATIONS_VERSION,
                 'license'        => 'AGPLv3+',
                 'author'         =>'<a href="mailto:d.durieux@siprossii.com">David DURIEUX</a>',
-                'homepage'       =>'https://',
+                'homepage'       =>'https://github.com/ddurieux/glpi_plugin_morenotifications',
                 'minGlpiVersion' => '0.84'
    );
 }
