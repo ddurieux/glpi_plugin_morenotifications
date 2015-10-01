@@ -85,6 +85,7 @@ function plugin_morenotifications_uninstall() {
 
 
 function plugin_morenotifications_notiftag(NotificationTarget $item) {
+   global $DB;
 
    $entity = new Entity();
    $entity->getFromDB($item->entity);
@@ -122,6 +123,25 @@ function plugin_morenotifications_notiftag(NotificationTarget $item) {
       $item->datas['##ticket.item.tech.mobile##'] = "";
       $item->datas['##ticket.item.tech.email##']  = "";
    }
+
+   // **************** Get entity calendar of the ticket **************** //
+   $query = "SELECT *
+      FROM `glpi_calendarsegments`
+      WHERE `calendars_id` = '".$entity->fields['calendars_id']."'
+      ORDER BY `day`, `begin`, `end`";
+   $result = $DB->query($query);
+   $numrows = $DB->numrows($result);
+
+   $cal_data = __('Day').", ".__('Start').", ".__('End')."\n";
+   $daysofweek = Toolbox::getDaysOfWeekArray();
+
+   if ($numrows) {
+      while ($data = $DB->fetch_assoc($result)) {
+         $cal_data .= $daysofweek[$data['day']].", ".$data["begin"].", ".$data["end"]."\n";
+      }
+   }
+
+   $item->datas["##ticket.calendardetails##"] = $cal_data;
 }
 
 ?>
