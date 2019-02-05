@@ -3,7 +3,7 @@
 /*
    ------------------------------------------------------------------------
    Plugin Morenotifications for GLPI
-   Copyright (C) 2014-2015 by the Plugin Morenotifications for David Durieux.
+   Copyright (C) 2014-2019 by the Plugin Morenotifications for David Durieux.
 
    https://github.com/ddurieux/glpi_plugin_morenotifications
    ------------------------------------------------------------------------
@@ -31,7 +31,7 @@
    @author    David Durieux
    @co-author
    @comment
-   @copyright Copyright (c) 2011-2015 Plugin Morenotifications for David Durieux
+   @copyright Copyright (c) 2011-2019 Plugin Morenotifications for David Durieux
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
    @link      https://github.com/ddurieux/glpi_plugin_morenotifications
@@ -53,7 +53,7 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
     * @param $object          (default null)
     * @param $options   array
    **/
-   function __construct($entity='', $event='', $object=null, $options=array()) {
+   function __construct($entity = '', $event = '', $object = null, $options = []) {
 
       parent::__construct($entity, $event, $object, $options);
 
@@ -67,8 +67,8 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
 
 
    function getEvents() {
-      return array ('ticketnotclosed' => __('Ticket not solved (use due date)', 'morenotifications'),
-                    'ticketwaiting'   => __('Ticket waiting', 'morenotifications'));
+      return ['ticketnotclosed' => __('Ticket not solved (use due date)', 'morenotifications'),
+              'ticketwaiting'   => __('Ticket waiting', 'morenotifications')];
    }
 
 
@@ -78,12 +78,12 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
     *
     * @param $event  (default '')
    **/
-   function getAdditionalTargets($event='') {
+   function getAdditionalTargets($event = '') {
 
       if ($event == 'ticketnotclosed'
               || $event == 'ticketwaiting') {
 
-         $this->target = array();
+         $this->target = [];
          $this->addTarget(Notification::AUTHOR, __('Requester'));
          $this->addTarget(Notification::RECIPIENT, __('Writer'));
          $this->addTarget(Notification::REQUESTER_GROUP_WITHOUT_SUPERVISOR,
@@ -105,7 +105,7 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
     * @param $event
     * @param $options array
    **/
-   function getDatasForTemplate($event, $options=array()) {
+   function getDatasForTemplate($event, $options = []) {
       global $CFG_GLPI;
 
       // Get datas from ITIL objects
@@ -113,13 +113,7 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
    }
 
 
-
-  /**
-    * @param $item            CommonDBTM object
-    * @param $options   array
-    * @param $simple          (false by default)
-   **/
-   function getDatasForObject(CommonDBTM $item, array $options, $simple=false) {
+   function getDataForObject(CommonDBTM $item, array $options, $simple = false) {
       global $CFG_GLPI, $DB;
 
       $objettype = strtolower($item->getType());
@@ -137,7 +131,6 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
                            = $this->formatURL($options['additionnaloption']['usertype'],
                                               $objettype."_".$item->getField("id")."_".
                                                         $item->getType().'$2');
-
 
       $entity = new Entity();
       if ($entity->getFromDB($this->getEntity())) {
@@ -166,9 +159,9 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
       }
 
       $datas["##$objettype.authors##"] = '';
-      $datas['authors'] = array();
+      $datas['authors'] = [];
       if ($item->countUsers(CommonITILActor::REQUESTER)) {
-         $users = array();
+         $users = [];
          foreach ($item->getUsers(CommonITILActor::REQUESTER) as $tmpusr) {
             $uid = $tmpusr['users_id'];
             $user_tmp = new User();
@@ -176,7 +169,7 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
                 && $user_tmp->getFromDB($uid)) {
                $users[] = $user_tmp->getName();
 
-               $tmp = array();
+               $tmp = [];
                $tmp['##author.id##']   = $uid;
                $tmp['##author.name##'] = $user_tmp->getName();
 
@@ -214,7 +207,7 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
                $users[] = $tmpusr['alternative_email'];
             }
          }
-         $datas["##$objettype.authors##"] = implode(', ',$users);
+         $datas["##$objettype.authors##"] = implode(', ', $users);
       }
 
       $datas["##$objettype.openbyuser##"] = '';
@@ -233,7 +226,7 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
 
       $datas["##$objettype.assigntousers##"] = '';
       if ($item->countUsers(CommonITILActor::ASSIGN)) {
-         $users = array();
+         $users = [];
          foreach ($item->getUsers(CommonITILActor::ASSIGN) as $tmp) {
             $uid      = $tmp['users_id'];
             $user_tmp = new User();
@@ -241,13 +234,12 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
                $users[$uid] = $user_tmp->getName();
             }
          }
-         $datas["##$objettype.assigntousers##"] = implode(', ',$users);
+         $datas["##$objettype.assigntousers##"] = implode(', ', $users);
       }
-
 
       $datas["##$objettype.assigntosupplier##"] = '';
       if ($item->countSuppliers(CommonITILActor::ASSIGN)) {
-         $suppliers = array();
+         $suppliers = [];
          foreach ($item->getSuppliers(CommonITILActor::ASSIGN) as $tmp) {
             $uid           = $tmp['suppliers_id'];
             $supplier_tmp  = new Supplier();
@@ -255,32 +247,32 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
                $suppliers[$uid] = $supplier_tmp->getName();
             }
          }
-         $datas["##$objettype.assigntosupplier##"] = implode(', ',$suppliers);
+         $datas["##$objettype.assigntosupplier##"] = implode(', ', $suppliers);
       }
 
       $datas["##$objettype.groups##"] = '';
       if ($item->countGroups(CommonITILActor::REQUESTER)) {
-         $groups = array();
+         $groups = [];
          foreach ($item->getGroups(CommonITILActor::REQUESTER) as $tmp) {
             $gid          = $tmp['groups_id'];
             $groups[$gid] = Dropdown::getDropdownName('glpi_groups', $gid);
          }
-         $datas["##$objettype.groups##"] = implode(', ',$groups);
+         $datas["##$objettype.groups##"] = implode(', ', $groups);
       }
 
       $datas["##$objettype.observergroups##"] = '';
       if ($item->countGroups(CommonITILActor::OBSERVER)) {
-         $groups = array();
+         $groups = [];
          foreach ($item->getGroups(CommonITILActor::OBSERVER) as $tmp) {
             $gid          = $tmp['groups_id'];
             $groups[$gid] = Dropdown::getDropdownName('glpi_groups', $gid);
          }
-         $datas["##$objettype.observergroups##"] = implode(', ',$groups);
+         $datas["##$objettype.observergroups##"] = implode(', ', $groups);
       }
 
       $datas["##$objettype.observerusers##"] = '';
       if ($item->countUsers(CommonITILActor::OBSERVER)) {
-         $users = array();
+         $users = [];
          foreach ($item->getUsers(CommonITILActor::OBSERVER) as $tmp) {
             $uid      = $tmp['users_id'];
             $user_tmp = new User();
@@ -291,17 +283,17 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
                $users[] = $tmp['alternative_email'];
             }
          }
-         $datas["##$objettype.observerusers##"] = implode(', ',$users);
+         $datas["##$objettype.observerusers##"] = implode(', ', $users);
       }
 
       $datas["##$objettype.assigntogroups##"] = '';
       if ($item->countGroups(CommonITILActor::ASSIGN)) {
-         $groups = array();
+         $groups = [];
          foreach ($item->getGroups(CommonITILActor::ASSIGN) as $tmp) {
             $gid          = $tmp['groups_id'];
             $groups[$gid] = Dropdown::getDropdownName('glpi_groups', $gid);
          }
-         $datas["##$objettype.assigntogroups##"] = implode(', ',$groups);
+         $datas["##$objettype.assigntogroups##"] = implode(', ', $groups);
       }
 
       $datas["##$objettype.solution.type##"]='';
@@ -313,10 +305,10 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
 
       $datas["##$objettype.solution.description##"]
                      = Toolbox::unclean_cross_side_scripting_deep($item->getField('solution'));
-      $datas['log'] = array();
+      $datas['log'] = [];
       // Use list_limit_max or load the full history ?
       foreach (Log::getHistoryData($item, 0, $CFG_GLPI['list_limit_max']) as $data) {
-         $tmp                               = array();
+         $tmp                               = [];
          $tmp["##$objettype.log.date##"]    = $data['date_mod'];
          $tmp["##$objettype.log.user##"]    = $data['user_name'];
          $tmp["##$objettype.log.field##"]   = $data['field'];
@@ -338,22 +330,21 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
          $restrict .= " AND `".$item->getTable()."`.`is_deleted` = '0' ";
       }
 
-       $datas["##$objettype.numberofunresolved##"] = countElementsInTableForEntity($item->getTable(),
-                                                                                   $this->getEntity(),
-                                                                                   $restrict);
-       // Document
-       $query = "SELECT `glpi_documents`.*
-                 FROM `glpi_documents`
-                 LEFT JOIN `glpi_documents_items`
-                      ON (`glpi_documents`.`id` = `glpi_documents_items`.`documents_id`)
-                 WHERE `glpi_documents_items`.`itemtype` =  '$objettype'
-                       AND `glpi_documents_items`.`items_id` = '".$item->getField('id')."'";
+      $datas["##$objettype.numberofunresolved##"] = countElementsInTableForEntity($item->getTable(),
+                                                                                  $this->getEntity(),
+                                                                                  $restrict);
+      // Document
+      $query = "SELECT `glpi_documents`.*
+                FROM `glpi_documents`
+                LEFT JOIN `glpi_documents_items`
+                     ON (`glpi_documents`.`id` = `glpi_documents_items`.`documents_id`)
+                WHERE `glpi_documents_items`.`itemtype` =  '$objettype'
+                      AND `glpi_documents_items`.`items_id` = '".$item->getField('id')."'";
 
-
-       $datas["documents"] = array();
-       if ($result = $DB->query($query)) {
-          while ($data = $DB->fetch_assoc($result)) {
-             $tmp                          = array();
+      $datas["documents"] = [];
+      if ($result = $DB->query($query)) {
+         while ($data = $DB->fetch_assoc($result)) {
+             $tmp                          = [];
              $tmp['##document.id##']       = $data['id'];
              $tmp['##document.name##']     = $data['name'];
              $tmp['##document.weblink##']  = $data['link'];
@@ -363,19 +354,15 @@ class PluginMorenotificationsNotificationTargetGeneral extends NotificationTarge
                                                                      $data['documentcategories_id']);
              $tmp['##document.filename##'] = $data['filename'];
              $datas['documents'][] = $tmp;
-          }
-       }
+         }
+      }
 
-       $datas["##$objettype.urldocument##"]
-             = $this->formatURL($options['additionnaloption']['usertype'],
-                                $objettype."_".$item->getField("id").'_Document_Item$1');
+      $datas["##$objettype.urldocument##"] =
+            $this->formatURL($options['additionnaloption']['usertype'],
+                             $objettype."_".$item->getField("id").'_Document_Item$1');
 
-       $datas["##$objettype.numberofdocuments##"] = count($datas['documents']);
-
+      $datas["##$objettype.numberofdocuments##"] = count($datas['documents']);
 
       return $datas;
    }
-
 }
-
-?>

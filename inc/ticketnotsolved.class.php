@@ -3,7 +3,7 @@
 /*
    ------------------------------------------------------------------------
    Plugin Morenotifications for GLPI
-   Copyright (C) 2014-2015 by the Plugin Morenotifications for David Durieux.
+   Copyright (C) 2014-2019 by the Plugin Morenotifications for David Durieux.
 
    https://github.com/ddurieux/glpi_plugin_morenotifications
    ------------------------------------------------------------------------
@@ -31,7 +31,7 @@
    @author    David Durieux
    @co-author
    @comment
-   @copyright Copyright (c) 2011-2015 Plugin Morenotifications for David Durieux
+   @copyright Copyright (c) 2011-2019 Plugin Morenotifications for David Durieux
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
    @link      https://github.com/ddurieux/glpi_plugin_morenotifications
@@ -52,11 +52,7 @@ class PluginMorenotificationsTicketnotsolved extends CommonDBTM {
    *@return text name of this type by language of the user connected
    *
    **/
-   static function getTypeName($nb=0) {
+   static function getTypeName($nb = 0) {
       return __('Tickets not solved', 'morenotifications');
    }
-
-
 }
-
-?>

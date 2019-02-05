@@ -3,7 +3,7 @@
 /*
    ------------------------------------------------------------------------
    Plugin Morenotifications for GLPI
-   Copyright (C) 2014-2015 by the Plugin Morenotifications for David Durieux.
+   Copyright (C) 2014-2019 by the Plugin Morenotifications for David Durieux.
 
    https://github.com/ddurieux/glpi_plugin_morenotifications
    ------------------------------------------------------------------------
@@ -31,7 +31,7 @@
    @author    David Durieux
    @co-author
    @comment
-   @copyright Copyright (c) 2011-2015 Plugin Morenotifications for David Durieux
+   @copyright Copyright (c) 2011-2019 Plugin Morenotifications for David Durieux
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
    @link      https://github.com/ddurieux/glpi_plugin_morenotifications
@@ -43,14 +43,14 @@
 function plugin_morenotifications_install() {
    global $DB;
 
-   if (!TableExists('glpi_plugin_morenotifications_entities')) {
+   if (!$DB->tableExists('glpi_plugin_morenotifications_entities')) {
       $query = "CREATE TABLE `glpi_plugin_morenotifications_entities` (
          `id` int(11) NOT NULL auto_increment,
          `entities_id` int(11) NOT NULL DEFAULT '0',
          `ticketnotclosed` int(2) NOT NULL DEFAULT '0',
          `ticketwaiting` int(2) NOT NULL DEFAULT '0',
          PRIMARY KEY (`id`)
-      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+      ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
       ";
       $DB->query($query);
       $query = "INSERT INTO `glpi_plugin_morenotifications_entities`"
@@ -61,10 +61,9 @@ function plugin_morenotifications_install() {
    CronTask::Register('PluginMorenotificationsGeneral',
                       'morenotifications',
                       '86400',
-                      array('mode' => 2,
-                            'allowmode' => 3,
-                            'logs_lifetime'=> 30));
-
+                      ['mode' => 2,
+                       'allowmode' => 3,
+                       'logs_lifetime'=> 30]);
    return true;
 }
 
@@ -74,7 +73,7 @@ function plugin_morenotifications_install() {
 function plugin_morenotifications_uninstall() {
    global $DB;
 
-   if (TableExists('glpi_plugin_morenotifications_entities')) {
+   if ($DB->tableExists('glpi_plugin_morenotifications_entities')) {
       $DB->query("DROP TABLE `glpi_plugin_morenotifications_entities`");
    }
 
@@ -88,40 +87,33 @@ function plugin_morenotifications_notiftag(NotificationTarget $item) {
    global $DB;
 
    $entity = new Entity();
+   $notepad = new Notepad();
+
    $entity->getFromDB($item->entity);
+   $notealls = $notepad->getAllForItem($entity);
+   $notes = [];
+   foreach ($notealls as $noteall) {
+      $notes[] = $noteall['content'];
+   }
 
-   $item->datas['##entity.phonenumber##'] = $entity->fields['phonenumber'];
-   $item->datas['##entity.address##']     = $entity->fields['address'];
-   $item->datas['##entity.fax##']         = $entity->fields['fax'];
-   $item->datas['##entity.website##']     = $entity->fields['website'];
-   $item->datas['##entity.email##']       = $entity->fields['email'];
-   $item->datas['##entity.postcode##']    = $entity->fields['postcode'];
-   $item->datas['##entity.town##']        = $entity->fields['town'];
-   $item->datas['##entity.state##']       = $entity->fields['state'];
-   $item->datas['##entity.country##']     = $entity->fields['country'];
-   $item->datas['##entity.notepad##']     = $entity->fields['notepad'];
+   $item->datas['##entity.notes##'] = implode("\n", $notes);
 
-
-   if (isset($item->obj->fields['itemtype'])
-           && $item->obj->fields['itemtype'] != '') {
-      $user = new User();
-      $i = new $item->obj->fields['itemtype'];
-      $i->getFromDB($item->obj->fields['items_id']);
-      if ($i->fields['users_id_tech'] > 0) {
-         if ($user->getFromDB($i->fields['users_id_tech'])) {
-
-            $item->datas['##ticket.item.tech.name##']   = $user->getName();
-            $item->datas['##ticket.item.tech.phone##']  = $user->fields['phone'];
-            $item->datas['##ticket.item.tech.mobile##'] = $user->fields['mobile'];
-            $item->datas['##ticket.item.tech.email##']  = implode(' ,', UserEmail::getAllForUser($i->fields['users_id_tech']));
+   $item->datas['techs'] = [];
+   if ($item->obj->countUsers(CommonITILActor::ASSIGN)) {
+      foreach ($item->obj->getUsers(CommonITILActor::ASSIGN) as $tmpusr) {
+         $uid = $tmpusr['users_id'];
+         $user_tmp = new User();
+         if ($uid
+             && $user_tmp->getFromDB($uid)) {
+            $tech = [
+               '##techs.name##'   => $user_tmp->getName(),
+               '##techs.phone##'  => $user_tmp->fields['phone'],
+               '##techs.mobile##' => $user_tmp->fields['mobile'],
+               '##techs.email##'  => implode(' ,', UserEmail::getAllForUser($uid))
+            ];
+            $item->datas['techs'][] = $tech;
          }
       }
-   }
-   if (!isset($item->datas['##ticket.item.tech.name##'])) {
-      $item->datas['##ticket.item.tech.name##']   = "";
-      $item->datas['##ticket.item.tech.phone##']  = "";
-      $item->datas['##ticket.item.tech.mobile##'] = "";
-      $item->datas['##ticket.item.tech.email##']  = "";
    }
 
    // **************** Get entity calendar of the ticket **************** //
@@ -143,5 +135,3 @@ function plugin_morenotifications_notiftag(NotificationTarget $item) {
 
    $item->datas["##ticket.calendardetails##"] = $cal_data;
 }
-
-?>

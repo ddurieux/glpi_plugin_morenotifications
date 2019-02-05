@@ -3,7 +3,7 @@
 /*
    ------------------------------------------------------------------------
    Plugin Morenotifications for GLPI
-   Copyright (C) 2014-2015 by the Plugin Morenotifications for David Durieux.
+   Copyright (C) 2014-2019 by the Plugin Morenotifications for David Durieux.
 
    https://github.com/ddurieux/glpi_plugin_morenotifications
    ------------------------------------------------------------------------
@@ -31,7 +31,7 @@
    @author    David Durieux
    @co-author
    @comment
-   @copyright Copyright (c) 2011-2015 Plugin Morenotifications for David Durieux
+   @copyright Copyright (c) 2011-2019 Plugin Morenotifications for David Durieux
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
    @link      https://github.com/ddurieux/glpi_plugin_morenotifications
@@ -46,30 +46,22 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginMorenotificationsEntity extends CommonDBTM {
 
+
+   static $rightname = 'entity';
+
    /**
    * Get name of this type
    *
    * @return text name of this type by language of the user connected
    *
    **/
-   static function getTypeName($nb=0) {
+   static function getTypeName($nb = 0) {
       return _n('Entity', 'Entities', $nb);
    }
 
 
 
-   static function canCreate() {
-      return Session::haveRight('entity', 'w');
-   }
-
-
-   static function canView() {
-      return Session::haveRight('entity', 'r');
-   }
-
-
-
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
       $itemtype = $item->getType();
       if ($itemtype == 'Entity') {
@@ -80,13 +72,12 @@ class PluginMorenotificationsEntity extends CommonDBTM {
 
 
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       $pmEntity = new self();
       if ($item->getID() >= 0) {
          $pmEntity->showForm($item->getID());
       }
-
       return true;
    }
 
@@ -101,7 +92,7 @@ class PluginMorenotificationsEntity extends CommonDBTM {
    *@return bool true if form is ok
    *
    **/
-   function showForm($entities_id, $options=array()) {
+   function showForm($entities_id, $options = []) {
       global $DB,$CFG_GLPI;
 
       $a_entities = $this->find("`entities_id`='".$entities_id."'", "", 1);
@@ -116,7 +107,7 @@ class PluginMorenotificationsEntity extends CommonDBTM {
 
       $this->showFormHeader($options);
 
-      $elements = array(
+      $elements = [
           '-1' => __('Inheritance of the parent entity'),
           '0'  => __('Never'),
           '1'  => __('Next day + every day', 'morenotifications'),
@@ -144,7 +135,7 @@ class PluginMorenotificationsEntity extends CommonDBTM {
           '23' => __('Next day + every 23 days', 'morenotifications'),
           '24' => __('Next day + every 24 days', 'morenotifications'),
           '25' => __('Next day + every 25 days', 'morenotifications'),
-      );
+      ];
 
       echo "<tr>";
       echo "<td>";
@@ -155,14 +146,14 @@ class PluginMorenotificationsEntity extends CommonDBTM {
       if ($entities_id == '0') {
          unset($elements['-1']);
       }
-      Dropdown::showFromArray("ticketnotclosed", $elements, array('value' => $this->fields['ticketnotclosed']));
+      Dropdown::showFromArray("ticketnotclosed", $elements, ['value' => $this->fields['ticketnotclosed']]);
       echo "</td>";
 
       echo "<td>";
       echo __('Tickets waiting', 'morenotifications')."&nbsp;:";
       echo "</td>";
       echo "<td>";
-      Dropdown::showFromArray("ticketwaiting", $elements, array('value' => $this->fields['ticketwaiting']));
+      Dropdown::showFromArray("ticketwaiting", $elements, ['value' => $this->fields['ticketwaiting']]);
       echo "</td>";
       echo "</tr>";
 
@@ -193,7 +184,6 @@ class PluginMorenotificationsEntity extends CommonDBTM {
          echo "</tr>";
       }
 
-
       $this->showFormButtons($options);
 
       return true;
@@ -201,7 +191,7 @@ class PluginMorenotificationsEntity extends CommonDBTM {
 
 
 
-/**
+   /**
     * Get value of config
     *
     * @global object $DB
@@ -257,7 +247,4 @@ class PluginMorenotificationsEntity extends CommonDBTM {
       }
       return $this->getValueAncestor($name, $entities_id);
    }
-
 }
-
-?>
